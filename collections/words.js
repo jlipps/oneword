@@ -37,6 +37,13 @@ Words.allow({
   }
 });
 
+Words.randColors = ["#87C0D4", "#D2D2CA", "#C2C1E3", "#AFE0F9", "#FFC891", "#FFD782", "#F9B493", "#F7C7C7", "#ABCCC1", "#95CAB0", "#BEE4BD"];
+
+Words.getRandColor = function() {
+  var randColorIndex = Math.floor(Math.random() * Words.randColors.length);
+  return Words.randColors[randColorIndex];
+};
+
 if (Meteor.isServer) {
   Words.before.insert(function(userId, word) {
     word.word = word.word.toLowerCase();

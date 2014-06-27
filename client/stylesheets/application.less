@@ -1,5 +1,10 @@
 /* CSS declarations go here */
 
+html {
+    width: 100%;
+    height: 100%;
+}
+
 body {
     background: #000;
     color: #fff;
@@ -10,6 +15,60 @@ body {
     width: 100%;
     height: 100%;
     font-family: Consolas, Monaco, monospace;
+}
+
+#wordForm {
+    width: 100%;
+    text-align: center;
+
+    div {
+        margin: 0px;
+        width: 90%;
+        padding: 20px 5%;
+        font-size: 100px;
+        position: relative;
+
+        @media only screen and (max-device-width : 768px) {
+            font-size: 40px;
+        }
+
+        input {
+            width: 100%;
+            font-size: 100%;
+            text-align: center;
+            padding: 0px;
+            margin: 0px;
+            background: #ccc;
+
+        }
+
+        a {
+            display: block;
+            font-family: Consolas, Monaco, monospace;
+            border: 5px solid #fff;
+            text-decoration: none;
+            background: #fff;
+            color: #000;
+            &:hover {
+                background: #ccc;
+            }
+        }
+
+        #check {
+            position: absolute;
+            right: 7%;
+            bottom: 25%;
+            width: 100px;
+            display: none;
+
+            @media only screen and (max-device-width : 768px) {
+                font-size: 40px;
+                width: 40px;
+                bottom: 28%;
+            }
+
+        }
+    }
 }
 
 #wordGround {

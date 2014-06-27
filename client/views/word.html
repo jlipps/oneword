@@ -1,10 +1,13 @@
 <template name="word">
-  {{#if myWord}}
-    Your word is {{myWord}}
-  {{/if}}
   <form id="wordForm">
-    Set your word:
-    <input type="text" id="word" value="{{myWord}}"/>
-    <input type="submit" id="submitWord" value="Set" />
+    <div>I feel</div>
+    <div>
+      <input type="text" id="word" value="{{myWord}}"/>
+      <img id="check" src="/check.png" />
+    </div>
+    <div>right now.</div>
+    <div>
+      <a id="submitWordForm" href="javascript:void(0);" onclick="$('#wordForm').submit();">Share</a>
+    </div>
   </form>
 </template>

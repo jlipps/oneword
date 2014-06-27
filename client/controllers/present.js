@@ -9,10 +9,9 @@ Meteor.loginVisitor();
 var userId = Meteor.userId();
 console.log("You are " + userId);
 var renderedWords = {};
-var randColors = ["#87C0D4", "#D2D2CA", "#C2C1E3", "#AFE0F9", "#FFC891", "#FFD782", "#F9B493", "#F7C7C7", "#ABCCC1", "#95CAB0", "#BEE4BD"];
 
 var fontSizeForWord = function(count) {
-  return 10 + (22 * Math.sqrt(count / 4));
+  return 11 + (22 * Math.sqrt(count / 3));
 };
 
 var wordAdded = function(word) {
@@ -32,15 +31,12 @@ var wordAdded = function(word) {
 
 var addWordElement = function(word, count) {
   var el = $('<div class="word" id="word' + word + '">' + word + '</div>');
-  var randColorIndex = Math.floor(Math.random() * randColors.length);
-  console.log(randColors);
-  console.log(randColorIndex);
   el.css({
     fontSize: fontSizeForWord(count),
     position: 'absolute',
     top: '-1000px',
     left: '-1000px',
-    color: randColors[randColorIndex]
+    color: Words.getRandColor()
   });
   $('#wordGround').append(el);
   randomizeElementPosition(el);
@@ -139,7 +135,7 @@ var removeWordById = function(id) {
 var animateElement = function(el) {
   var alpha = Math.random() * 2 * Math.PI;
   el.tails = [];
-  var stepSize = 0.3;
+  var stepSize = Math.random() * 0.3 + 0.15;
   var p = 2;
   var inBounds = function() {
     var elX = el.position().left;
@@ -163,6 +159,7 @@ var animateElement = function(el) {
       });
       if (!inBounds()) {
         alpha = Math.random() * 2 * Math.PI;
+        stepSize = Math.random() * 0.3 + 0.15;
       }
       requestAnimationFrame(step);
     }
