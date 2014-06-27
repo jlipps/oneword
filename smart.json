@@ -1,5 +1,7 @@
 {
   "packages": {
-    "router": {}
+    "router": {},
+    "collection-hooks": {},
+    "accounts-guest": {}
   }
 }

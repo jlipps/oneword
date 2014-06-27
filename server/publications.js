@@ -2,6 +2,6 @@
 "use strict";
 
 Meteor.publish("words", function() {
-  words = words.find();
+  var words = Words.find();
   return words;
 });

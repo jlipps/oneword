@@ -1,1 +1,10 @@
-word
+<template name="word">
+  {{#if myWord}}
+    Your word is {{myWord}}
+  {{/if}}
+  <form id="wordForm">
+    Set your word:
+    <input type="text" id="word" value="{{myWord}}"/>
+    <input type="submit" id="submitWord" value="Set" />
+  </form>
+</template>
