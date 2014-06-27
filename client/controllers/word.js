@@ -25,6 +25,7 @@ var setWord = function(evt) {
         $('#check').fadeOut(700);
       }, 2000);
     });
+    $('#submitWordForm').val(wordText);
   };
   if (curWord) {
     Words.update(curWord._id, {$set: {word: wordText}}, function(err) {
