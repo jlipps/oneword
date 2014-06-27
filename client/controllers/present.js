@@ -1,9 +1,15 @@
-/*global Template:true, Meteor:true, Words:true, $:true, Helpers:true, _:true*/
+/*global Template:true, Meteor:true, Words:true, $:true, _:true,
+   window:true */
 "use strict";
-
+var requestAnimationFrame = window.requestAnimationFrame ||
+                               window.mozRequestAnimationFrame ||
+                               window.webkitRequestAnimationFrame ||
+                               window.msRequestAnimationFrame;
 Meteor.loginVisitor();
 var userId = Meteor.userId();
+console.log("You are " + userId);
 var renderedWords = {};
+var randColors = ["#87C0D4", "#D2D2CA", "#C2C1E3", "#AFE0F9", "#FFC891", "#FFD782", "#F9B493", "#F7C7C7", "#ABCCC1", "#95CAB0", "#BEE4BD"];
 
 var fontSizeForWord = function(count) {
   return 10 + (22 * Math.sqrt(count / 4));
@@ -26,25 +32,28 @@ var wordAdded = function(word) {
 
 var addWordElement = function(word, count) {
   var el = $('<div class="word" id="word' + word + '">' + word + '</div>');
+  var randColorIndex = Math.floor(Math.random() * randColors.length);
+  console.log(randColors);
+  console.log(randColorIndex);
   el.css({
     fontSize: fontSizeForWord(count),
     position: 'absolute',
     top: '-1000px',
-    left: '-1000px'
+    left: '-1000px',
+    color: randColors[randColorIndex]
   });
   $('#wordGround').append(el);
   randomizeElementPosition(el);
+  animateElement(el);
 };
 
 var randomizeElementPosition = function(el) {
-  console.log(el);
   var checkRectClear = function(x1, y1, x2, y2) {
     var foundOverlap = false;
     _.each(renderedWords, function (data, word) {
       if (!foundOverlap) {
         var el = $('#word' + word);
         var elW = el.outerWidth(), elH = el.outerHeight();
-        console.log(el.position());
         var elX1 = el.position().left, elY1 = el.position().top;
         var elX2 = elX1 + elW, elY2 = elY1 + elH;
         var leftOverlap = elX1 >= x1 && elX1 <= x2;
@@ -75,12 +84,10 @@ var randomizeElementPosition = function(el) {
   var maxY = screenH - elH;
   var p = 20;
   var randPos = getRandPos();
-  console.log(randPos);
   while (!checkRectClear(randPos.x - p, randPos.y - p,
                          randPos.x + elW + p, randPos.y + elH + p)) {
     randPos = getRandPos();
   }
-  console.log(randPos);
   el.css({top: randPos.y + 'px', left: randPos.x + 'px'});
 };
 
@@ -127,6 +134,40 @@ var removeWordById = function(id) {
     removeWordElement(word);
     delete renderedWords[word];
   }
+};
+
+var animateElement = function(el) {
+  var alpha = Math.random() * 2 * Math.PI;
+  el.tails = [];
+  var stepSize = 0.3;
+  var p = 2;
+  var inBounds = function() {
+    var elX = el.position().left;
+    var elY = el.position().top;
+    var elW = el.outerWidth();
+    var elH = el.outerHeight();
+    var screenW = $('#wordGround').outerWidth();
+    var screenH = $('#wordGround').outerHeight();
+    return !((elX < p) || ((elX + elW) > (screenW - p)) ||
+             (elY < p) || ((elY + elH) > (screenH - p)));
+  };
+  var step = function(timestamp) {
+    if (el.parent().length) {
+      var curX = el.position().left;
+      var curY = el.position().top;
+      var newX = curX + (stepSize * Math.cos(alpha));
+      var newY = curY + (stepSize * Math.sin(alpha));
+      el.css({
+        left: newX,
+        top: newY
+      });
+      if (!inBounds()) {
+        alpha = Math.random() * 2 * Math.PI;
+      }
+      requestAnimationFrame(step);
+    }
+  };
+  requestAnimationFrame(step);
 };
 
 Handlebars.registerHelper('key_value', function(context, options) {
