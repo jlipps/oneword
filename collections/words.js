@@ -15,7 +15,7 @@ Words = new Meteor.Collection("words");
 
 Words.isValid = function(text) {
   console.log("Validating " + text);
-  if (!/^[a-zA-Z]+$/.test(text)) {
+  if (!/^[a-zA-ZÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ]+$/.test(text)) {
     console.log("bad");
     return false;
   }

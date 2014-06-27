@@ -12,20 +12,27 @@ Template.word.myWord = function() {
 
 var setWord = function(evt) {
   evt.preventDefault();
+  $('#loaderBg').show();
+  $('#loader').show();
   var wordText = $('#word').val().trim();
   var newWord = {word: wordText};
   var curWord = Words.findOne({owner: userId});
   var onErr = function() {
     window.alert("Sorry, there was a problem saving your word. Please make " +
                  "sure there are no spaces or characters other than a-z");
+    $('#loaderBg').hide();
+    $('#loader').hide();
   };
   var onSuccess = function() {
+    $('#word').blur();
     $('#check').fadeIn(700, function() {
       setTimeout(function() {
         $('#check').fadeOut(700);
       }, 2000);
     });
     $('#submitWordForm').val(wordText);
+    $('#loaderBg').hide();
+    $('#loader').hide();
   };
   if (curWord) {
     Words.update(curWord._id, {$set: {word: wordText}}, function(err) {
